@@ -7,8 +7,8 @@ typedef struct {
 } Mapel;
 
 typedef struct {
-    char nama[30];
-    char nis[30];
+    char namaSiswa[30];
+    char nisn[30];
     char kelas[30];
     char sekolah[30];
 } Identitas;
@@ -28,11 +28,11 @@ void simpanRapor(Identitas *id, Nilai n[], Mapel m[]);
 
 int main() {
     Mapel mapel[5] = {
-        {"WEB",76},
-        {"Mobile",76},
+        {"Pemrograman Web",76},
+        {"Pemrograman Mobile",76},
         {"Basis Data",76},
         {"PBO",76},
-        {"KEWIRAUSAHAAN",79}
+        {"Kewirausahaan",79},
     };
 
     Identitas siswa;
@@ -46,41 +46,42 @@ int main() {
 }
 
 void tampilMenu(Mapel m[]) {
-    printf("------------------------------\n");
-    printf(" RAPOR SISWA SMKN 1 DENPASAR\n");
-    printf("------------------------------\n");
+    printf("========================================\n");
+    printf("     DAFTAR MATA PELAJARAN DAN KKM\n");
+    printf("========================================\n");
+    printf("%-3s  %-20s %-3s\n", "No.", "Mata Pelajaran", "KKM");
+    printf("----------------------------------------\n");
 
-    printf("| %-2s | %-15s | %-3s |\n", "NO", "NAMA", "KKM");
-    printf("------------------------------\n");
-
-    for(int i = 0; i < 5; i++ ) {
-        printf("| %-2d | %-15s | %-3d |\n", i + 1, m[i].namaMapel, m[i].kkm);
+    for(int i = 0; i < 5; i++) {
+        printf("%-3d  %-20s %-3d\n",
+               i + 1,
+               m[i].namaMapel,
+               m[i].kkm);
     }
-    printf("------------------------------\n");
+    printf("========================================\n");
+
 }
 
 void inputIdentitas(Identitas id[]) {
-    printf("------------------------------\n");
-    printf("    INPUT IDENTITAS SISWA\n");
-    printf("------------------------------\n");
+    printf("\n");
+    printf("=== INPUT IDENTITAS SISWA ===\n");
 
-    printf("masukkan nama : ");
-    scanf(" %[^\n]", id->nama);
-    printf("masukkan nis : ");
-    scanf(" %[^\n]", id->nis);
-    printf("masukkan kelas : ");
+    printf("%-15s : ","Nama Siswa");
+    scanf(" %[^\n]", id->namaSiswa);
+    printf("%-15s : ","NISN");
+    scanf(" %[^\n]", id->nisn);
+    printf("%-15s : ","Kelas");
     scanf(" %[^\n]", id->kelas);
-    printf("masukkan asal sekolah : ");
+    printf("%-15s : ","Nama Sekolah");
     scanf(" %[^\n]", id->sekolah);
 }
 
 void inputNilai(Nilai n[], Mapel m[]) {
-    printf("------------------------------\n");
-    printf("      INPUT NILAI MAPEL\n");
-    printf("------------------------------\n");
+    printf("\n");
+    printf("=== INPUT NILAI MATA PELAJARAN ===\n");
 
     for(int i = 0; i < 5; i++) {
-        printf("masukkan nilai mapel %s : ", m[i].namaMapel);
+        printf("Nilai %-20s : ", m[i].namaMapel);
         scanf("%d", &n[i].nilai);
 
         strcpy(n[i].status, (n[i].nilai >= m[i].kkm) ? "LULUS" : "TIDAK LULUS");
@@ -88,23 +89,22 @@ void inputNilai(Nilai n[], Mapel m[]) {
 }
 
 void tampilRapor(Identitas *id, Nilai n[], Mapel m[]) {
-    printf("------------------------------------------------------\n");
-    printf("        RAPOR SISWA SMKN 1 DENPASAR\n");
-    printf("------------------------------------------------------\n");
-
-    printf("Nama    : %s\n", id->nama);
-    printf("NIS     : %s\n", id->nis);
-    printf("Kelas   : %s\n", id->kelas);
-    printf("Sekolah : %s\n", id->sekolah);
-
-    printf("------------------------------------------------------\n");
-    printf("| %-2s | %-15s | %-3s | %-5s | %-13s |\n", "NO", "NAMA", "KKM", "NILAI", "STATUS");
-    printf("------------------------------------------------------\n");
+    printf("\n");
+    printf("====================================================\n");
+    printf("           RAPOR SMK NEGERI 1 DENPASAR\n");
+    printf("====================================================\n");
+    printf("%-15s : %s\n","Nama Siswa", id->namaSiswa);
+    printf("%-15s : %s\n","NISN", id->nisn);
+    printf("%-15s : %s\n","Kelas", id->kelas);
+    printf("%-15s : %s\n","Sekolah", id->sekolah);
+    printf("====================================================\n");
+    printf("%-3s  %-20s %-6s %-6s %-13s\n", "No.", "Mata Pelajaran", "KKM", "Nilai", "Status");
+    printf("----------------------------------------------------\n");
 
     float total = 0;
 
-    for(int i = 0; i < 5; i++) {
-        printf("| %-2d | %-15s | %-3d | %-5d | %-13s |\n",
+    for(int i = 0; i <5; i++) {
+        printf("%-3d  %-20s %-6d %-6d %-13s\n",
                i + 1,
                m[i].namaMapel,
                m[i].kkm,
@@ -113,51 +113,55 @@ void tampilRapor(Identitas *id, Nilai n[], Mapel m[]) {
 
                total += n[i].nilai;
     }
-    printf("------------------------------------------------------\n");
 
     n[0].avg = total / 5;
 
     if(n[0].avg >= 86 && n[0].avg < 100) {
         strcpy(n[0].predikat, "A");
     }
-    else if(n[0].avg >= 85 && n[0].avg < 80 ) {
+    else if(n[0].avg >= 85 && n[0].avg < 80) {
         strcpy(n[0].predikat, "B");
     }
-    else if (n[0].avg >= 75 && n[0].avg < 79 ){
+    else if(n[0].avg >= 79 && n[0].avg < 75) {
         strcpy(n[0].predikat, "C");
     }
     else {
         strcpy(n[0].predikat, "D");
     }
 
-    printf("Rata Rata   : %.2f\n", n[0].avg);
-    printf("Predikat    : %s\n", n[0].predikat);
-    printf("------------------------------------------------------\n");
+    printf("====================================================\n");
+    printf("Rata-rata Nilai : %.2f\n", n[0].avg);
+    printf("Predikat        : %s\n", n[0].predikat);
+    printf("====================================================\n");
 
     char op;
-
-    printf("Apakah data anda sudah benar?\n");
+    printf("\n");
+    printf("Aapakah data anda sudah benar?\n");
     printf("Tekan Y untuk cetak rapor\n");
-    printf("Tekan N untuk input nilai ulang\n");
-
-    printf("Pilihan Anda : ");
+    printf("Tekan N untuk inpur ulang nilai\n");
+    printf("Pilihan anda : ");
     scanf(" %c", &op);
 
-
     if(op == 'y' || op == 'Y') {
-        simpanRapor(id, n, m);\
-        printf("Rapor Berhasil Di Simpan");
+        simpanRapor(id, n, m);
+        printf("Rapor Berhasil disimpan ke file 'rapor.txt\n");
+        printf("\n");
+        printf("Program Selesai. Terima Kasih!\n");
     }
     else if(op == 'n' || op == 'N') {
+        printf("\n");
+        printf("=== INPUT ULANG NILAI ===\n");
         inputNilai(n, m);
         tampilRapor(id, n, m);
     }
+
+
 }
 
 void simpanRapor(Identitas *id, Nilai n[], Mapel m[]) {
     char fName[30];
 
-    sprintf(fName, "Rapor_%s_%s.txt", id->nama, id->nis);
+    sprintf(fName, "Rapor.txt");
 
     FILE *fp = fopen(fName, "w");
     if(fp == NULL) {
@@ -165,37 +169,32 @@ void simpanRapor(Identitas *id, Nilai n[], Mapel m[]) {
         return;
     }
 
-    fprintf(fp,"------------------------------------------------------\n");
-    fprintf(fp,"        RAPOR SISWA SMKN 1 DENPASAR\n");
-    fprintf(fp,"------------------------------------------------------\n");
+    fprintf(fp,"\n");
+    fprintf(fp,"====================================================\n");
+    fprintf(fp,"           RAPOR SMK NEGERI 1 DENPASAR\n");
+    fprintf(fp,"====================================================\n");
+    fprintf(fp,"%-15s : %s\n","Nama Siswa", id->namaSiswa);
+    fprintf(fp,"%-15s : %s\n","NISN", id->nisn);
+    fprintf(fp,"%-15s : %s\n","Kelas", id->kelas);
+    fprintf(fp,"%-15s : %s\n","Sekolah", id->sekolah);
+    fprintf(fp,"====================================================\n");
+    fprintf(fp,"%-3s  %-20s %-6s %-6s %-13s\n", "No.", "Mata Pelajaran", "KKM", "Nilai", "Status");
+    fprintf(fp,"----------------------------------------------------\n");
 
-    fprintf(fp,"Nama    : %s\n", id->nama);
-    fprintf(fp,"NIS     : %s\n", id->nis);
-    fprintf(fp,"Kelas   : %s\n", id->kelas);
-    fprintf(fp,"Sekolah : %s\n", id->sekolah);
-
-    fprintf(fp,"------------------------------------------------------\n");
-    fprintf(fp,"| %-2s | %-15s | %-3s | %-5s | %-13s |\n", "NO", "NAMA", "KKM", "NILAI", "STATUS");
-    fprintf(fp,"------------------------------------------------------\n");
-
-    float total = 0;
-
-    for(int i = 0; i < 5; i++) {
-        fprintf(fp,"| %-2d | %-15s | %-3d | %-5d | %-13s |\n",
+    for(int i = 0; i <5; i++) {
+        fprintf(fp,"%-3d  %-20s %-6d %-6d %-13s\n",
                i + 1,
                m[i].namaMapel,
                m[i].kkm,
                n[i].nilai,
                n[i].status);
 
-               total += n[i].nilai;
+
     }
 
-    fprintf(fp,"------------------------------------------------------\n");
-    fprintf(fp,"Total Nilai : %.f\n", total );
-    fprintf(fp,"Rata Rata   : %.2f\n", n[0].avg);
-    fprintf(fp,"Predikat    : %s\n", n[0].predikat);
-    fprintf(fp,"------------------------------------------------------\n");
-
+    fprintf(fp,"====================================================\n");
+    fprintf(fp,"Rata-rata Nilai : %.2f\n", n[0].avg);
+    fprintf(fp,"Predikat        : %s\n", n[0].predikat);
+    fprintf(fp,"====================================================\n");
     fclose(fp);
 }
